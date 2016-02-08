@@ -192,12 +192,55 @@ public class Location
 
 	#endregion
 
+	#region Influence Searches
+
+	/// <summary>
+	/// Finds the lowest infulence survivor in the location.
+	/// </summary>
+	/// <returns>The lowest infulence survivor.</returns>
 	public PlayerPiece FindLowestInfulenceSurvivor ()
 	{
+		return FindLowestInfulenceSurvivor (new PlayerPiece[0]);
+	}
+
+	/// <summary>
+	/// Finds the lowest infulence survivor in the location.
+	/// </summary>
+	/// <returns>The lowest infulence survivor.</returns>
+	/// <param name="excludingList">Excluding list to not check for in the search.</param>
+	public PlayerPiece FindLowestInfulenceSurvivor (PlayerPiece[] excludingList)
+	{
 		PlayerPiece lowestInfulenceCharacter = (PlayerPiece)PlayerPositions [0].GetOccupant ();
+
+		// For each player in the player positions...
 		for (int i = 0; i < PlayerPositions.Length; i++) {
+			// ...Get the current player...
+			var currentPlayer = PlayerPositions [i];
+
+			// ...And reset the isExcluded flag...
+			var isExcluded = false;
+
+			// ...And for each player in the exluding list...
+			for (int x = 0; x < excludingList.Length; x++) {
+				// ..If the player we are currently checking is in the exluding list...
+				if (currentPlayer.Equals (excludingList [x])) {
+					// ...Flag this member as excluded.
+					isExcluded = true;
+					break;
+				}
+			}
+
+			// ...If the isExcluded attribute is flagged...
+			if (isExcluded) {
+				// ....Then skip this entry.
+				continue;
+			}
+
 			// TODO: Check for the influence on the player
 		}
+
 		return lowestInfulenceCharacter;
 	}
+
+	#endregion
 }
