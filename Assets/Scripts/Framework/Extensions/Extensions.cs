@@ -11,9 +11,9 @@ public static class Extensions
 	public static Transform[] GetChildren(this Transform t)
 	{
 		var returnArray = new Transform[t.childCount];
-		for(var i = 0; i < t.childCount; i++)
+		for (var i = 0; i < t.childCount; i++)
 		{
-			returnArray[i] = t.GetChild(i);
+			returnArray [i] = t.GetChild (i);
 		}
 		return returnArray;
 	}
@@ -26,9 +26,9 @@ public static class Extensions
 	public static GameObject[] GetChildrenAsGameObjects(this Transform t)
 	{
 		var returnArray = new GameObject[t.childCount];
-		for(var i = 0; i < t.childCount; i++)
+		for (var i = 0; i < t.childCount; i++)
 		{
-			returnArray[i] = t.GetChild(i).gameObject;
+			returnArray [i] = t.GetChild (i).gameObject;
 		}
 		return returnArray;
 	}
@@ -41,10 +41,10 @@ public static class Extensions
 	/// <returns>The found gameobject</returns>
 	public static Transform FindChildByTag(this Transform t, string tag)
 	{
-		for(var i = 0; i < t.childCount; i++)
+		for (var i = 0; i < t.childCount; i++)
 		{
-			var child = t.GetChild(i);
-			if(child.CompareTag(tag))
+			var child = t.GetChild (i);
+			if (child.CompareTag (tag))
 			{
 				return child;
 			}
@@ -59,22 +59,22 @@ public static class Extensions
 	/// <param name="go">The generic object passed</param>
 	public static void Run<T>(this Action<T> action, T go)
 	{
-		if(action != null)
+		if (action != null)
 		{
-			action(go);
+			action (go);
 		}
 	}
 
 
-    /// <summary>
-    /// Calls the delegate if it is not null
-    /// </summary>
-    /// <param name="action">The action to be called</param>
-    public static void Run(this Action action)
+	/// <summary>
+	/// Calls the delegate if it is not null
+	/// </summary>
+	/// <param name="action">The action to be called</param>
+	public static void Run(this Action action)
 	{
-		if(action != null)
+		if (action != null)
 		{
-			action();
+			action ();
 		}
 	}
 
@@ -88,17 +88,17 @@ public static class Extensions
 	{
 
 		// Store all attached Functions to this Func in an Array
-		var functions = func.GetInvocationList();
+		var functions = func.GetInvocationList ();
 
 		// For each Func in the Func Array...
-		for(var i = 0; i < functions.Length; i++)
+		for (var i = 0; i < functions.Length; i++)
 		{
 
 			// ...Get the inidividul function at position i...
-			var function = (Func<bool>)functions[i];
+			var function = (Func<bool>)functions [i];
 
 			// ...If the function attached returns false...
-			if(function() == false)
+			if (function () == false)
 			{
 				
 				// ...Then return false, as no single function must false for this function to return true.
@@ -118,17 +118,17 @@ public static class Extensions
 	{
 		
 		// Store all attached Functions to this Func in an Array
-		var functions = func.GetInvocationList();
+		var functions = func.GetInvocationList ();
 		
 		// For each Func in the Func Array...
-		for(var i = 0; i < functions.Length; i++)
+		for (var i = 0; i < functions.Length; i++)
 		{
 
 			// ...Get the inidividul function at position i...
-			var function = (Func<T, bool>)functions[i];
+			var function = (Func<T, bool>)functions [i];
 
 			// ...If the function attached returns false...
-			if(function(passedParameter) == false)
+			if (function (passedParameter) == false)
 			{
 
 				// ...Then return false, as no single function must false for this function to return true.
@@ -146,9 +146,9 @@ public static class Extensions
 	public static bool RunOrIsNull(this Func<bool> func)
 	{
 		// If the Func that called this Method is null...
-		return func == null || func.Run();
+		return func == null || func.Run ();
 	}
-	
+
 	/// <summary>
 	/// Calls the delegate if it is not null and returns true if the func is null or if all invocations return true
 	/// </summary>
@@ -156,9 +156,9 @@ public static class Extensions
 	/// <param name="passedParameter">The passed parameter of the Func</param>
 	public static bool RunOrIsNull<T>(this Func<T, bool> func, T passedParameter)
 	{
-		return func == null || func.Run(passedParameter);
+		return func == null || func.Run (passedParameter);
 	}
-	
+
 	#endregion
 
 	/// <summary>
@@ -167,9 +167,9 @@ public static class Extensions
 	/// <param name="g"></param>
 	public static void SafeDestroy(this GameObject g)
 	{
-		if(g != null)
+		if (g != null)
 		{
-			UnityEngine.Object.Destroy(g);
+			UnityEngine.Object.Destroy (g);
 		}
 	}
 
@@ -178,7 +178,7 @@ public static class Extensions
 	/// </summary>
 	/// <param name="g">The gameobject to set the parent of</param>
 	/// <param name="parent">The parent gameobject</param>
-	public static void SetParent(this Transform t, Transform parent)
+	public static void SetNewParent(this Transform t, Transform parent)
 	{
 		t.parent = parent;
 	}
@@ -188,7 +188,7 @@ public static class Extensions
 	/// </summary>
 	/// <param name="g">The gameobject to set the parent of</param>
 	/// <param name="parent">The parent gameobject</param>
-	public static void SetParent(this GameObject g, GameObject parent)
+	public static void SetNewParent(this GameObject g, GameObject parent)
 	{
 		g.transform.parent = parent.transform;
 	}
@@ -200,7 +200,7 @@ public static class Extensions
 	/// <param name="x">The new x value</param>
 	public static void SetPositionX(this Transform t, float x)
 	{
-		t.position = new Vector3(x, t.position.y, t.position.z);
+		t.position = new Vector3 (x, t.position.y, t.position.z);
 	}
 
 	/// <summary>
@@ -210,7 +210,7 @@ public static class Extensions
 	/// <param name="y">The new y value</param>
 	public static void SetPositionY(this Transform t, float y)
 	{
-		t.position = new Vector3(t.position.x, y, t.position.z);
+		t.position = new Vector3 (t.position.x, y, t.position.z);
 	}
 
 	/// <summary>
@@ -220,6 +220,6 @@ public static class Extensions
 	/// <param name="z">The new z value</param>
 	public static void SetPositionZ(this Transform t, float z)
 	{
-		t.position = new Vector3(t.position.x, t.position.y, z);
+		t.position = new Vector3 (t.position.x, t.position.y, z);
 	}
 }

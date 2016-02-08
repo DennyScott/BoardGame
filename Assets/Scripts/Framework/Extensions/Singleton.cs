@@ -7,11 +7,8 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
 	/**
 	   Returns the instance of this singleton.
 	*/
-
-	public static T Instance
-	{
-		get
-		{
+	public static T Instance {
+		get {
 			if(InnerInstance != null)
 			{
 				return InnerInstance;
