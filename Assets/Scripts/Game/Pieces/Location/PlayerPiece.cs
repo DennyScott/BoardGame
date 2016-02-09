@@ -15,7 +15,7 @@ public class PlayerPiece : LocationPiece
 	/// Gets the infulence of the survivor.
 	/// </summary>
 	/// <value>The infulence skill.</value>
-	public int Infulence { get { return survivorStats.Influence; } }
+	public int Influence { get { return survivorStats.Influence; } }
 
 	/// <summary>
 	/// Gets the search of the survivor.

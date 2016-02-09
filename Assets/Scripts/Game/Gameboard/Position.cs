@@ -30,7 +30,7 @@ public class Position
 	/// Removes the character in this position.
 	/// </summary>
 	/// <returns>The character that was in this position.</returns>
-	public GamePiece RemoveCharacter()
+	public LocationPiece RemoveCharacter()
 	{
 		if (!IsOccupied)
 			return null;
@@ -44,7 +44,7 @@ public class Position
 	/// Removes the character in this position.
 	/// </summary>
 	/// <returns>The character that was in this position.</returns>
-	public GamePiece RemoveCharacter(LocationPiece characterToCheck)
+	public LocationPiece RemoveCharacter(LocationPiece characterToCheck)
 	{
 		if (_currentOccupant.Equals(characterToCheck))
 			return RemoveCharacter();
@@ -56,7 +56,7 @@ public class Position
 	/// Gets the occupant of this position.
 	/// </summary>
 	/// <returns>The occupant in this position.</returns>
-	public GamePiece GetOccupant()
+	public LocationPiece GetOccupant()
 	{
 		return _currentOccupant;
 	}

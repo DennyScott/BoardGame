@@ -5,11 +5,10 @@ using System.Collections.Generic;
 [Serializable]
 public class Location
 {
-	[HideInInspector]
-	protected Position[] PlayerPositions;
 
-	[HideInInspector]
-	protected Position[] EnemyPositions;
+	protected PositionSet<EnemyPiece> EnemyPositions;
+
+	protected PlayerPositionSet PlayerPositions;
 
 	[SerializeField]
 	private int _playerPositions;
@@ -32,9 +31,6 @@ public class Location
 	/// </summary>
 	public void InitializePositions()
 	{
-		PlayerPositions = new Position[_playerPositions];
-
-		EnemyPositions = new Position[_enemyPositions];
 	}
 
 	#endregion
@@ -89,7 +85,7 @@ public class Location
 	/// <param name="newPiece">New piece to add to this location.</param>
 	public bool AddPlayerPiece(PlayerPiece newPiece)
 	{
-		return AddPiece(newPiece, PlayerPositions);
+		return PlayerPositions.Queue(newPiece);
 	}
 
 	/// <summary>
@@ -99,31 +95,7 @@ public class Location
 	/// <param name="zombiePiece">Zombie piece to add to the enemy positions.</param>
 	public bool AddZombiePiece(EnemyPiece zombiePiece)
 	{
-		return AddPiece(zombiePiece, EnemyPositions);
-	}
-
-	/// <summary>
-	/// Adds a piece to the passed positions array.
-	/// </summary>
-	/// <returns><c>true</c>, if piece was added, <c>false</c> otherwise.</returns>
-	/// <param name="pieceToAdd">Piece to add to the passed positions.</param>
-	/// <param name="positionsToCheck">Positions to check for adding too.</param>
-	private bool AddPiece(LocationPiece pieceToAdd, Position[] positionsToCheck)
-	{
-		// For each position in the PlayerPositions Array...
-		for (int i = 0; i < positionsToCheck.Length; i++)
-		{
-
-			// ...If adding the character returns true, meaning it was added...
-			if (positionsToCheck [i].AddCharacter(pieceToAdd))
-			{
-
-				// ...return true.
-				return true;
-			}
-		}
-
-		return false;
+		return EnemyPositions.Queue(zombiePiece);
 	}
 
 	#endregion
@@ -137,7 +109,7 @@ public class Location
 	/// <returns><c>true</c>, if survivor piece was removed, <c>false</c> otherwise.</returns>
 	public bool RemoveSurvivorPiece(PlayerPiece survivorToRemove)
 	{
-		return RemovePiece(survivorToRemove, PlayerPositions);
+		return  PlayerPositions.Remove(survivorToRemove) != null;
 	}
 
 	/// <summary>
@@ -147,7 +119,7 @@ public class Location
 	/// <returns><c>true</c>, if zombie piece was removed, <c>false</c> otherwise.</returns>
 	public bool RemoveZombiePiece(EnemyPiece zombieToRemove)
 	{
-		return RemovePiece(zombieToRemove, EnemyPositions);
+		return EnemyPositions.Remove(zombieToRemove) != null;
 	}
 
 	/// <summary>
@@ -156,44 +128,7 @@ public class Location
 	/// <returns><c>true</c>, if zombie piece was removed, <c>false</c> otherwise.</returns>
 	public bool RemoveZombiePiece()
 	{
-		// For each enemy in enemy positions, starting at the front of the queue...
-		for (int i = EnemyPositions.Length - 1; i >= 0; i--)
-		{
-
-			// ...If the removeal results in a non null return, meaning something was removed...
-			if (EnemyPositions [i].RemoveCharacter() != null)
-			{
-
-				// ...Then return true.
-				return true;
-			}
-		}
-
-		return false;
-	}
-
-	/// <summary>
-	/// Removes the piece passed from the passed Position Array.
-	/// </summary>
-	/// <returns><c>true</c>, if piece was removed, <c>false</c> otherwise.</returns>
-	/// <param name="pieceToRemove">Piece to remove from the passed array.</param>
-	/// <param name="positionsToCheck">Positions to check for the piece in, and remove from.</param>
-	private bool RemovePiece(LocationPiece pieceToRemove, Position[] positionsToCheck)
-	{
-		// For each piece in the passed piece collection...
-		for (int i = 0; i < positionsToCheck.Length; i++)
-		{
-
-			// ...If the piece removal resulted in a non null result, meaning something was removed...
-			if (positionsToCheck [i].RemoveCharacter(pieceToRemove) != null)
-			{
-
-				// ...Then return true.
-				return true;
-			}
-		}
-
-		return false;
+		return EnemyPositions.Pop() != null;
 	}
 
 	#endregion
@@ -216,44 +151,17 @@ public class Location
 	/// <param name="excludingList">Excluding list to not check for in the search.</param>
 	public PlayerPiece FindLowestInfulenceSurvivor(PlayerPiece[] excludingList)
 	{
-		PlayerPiece lowestInfulenceCharacter = (PlayerPiece)PlayerPositions [0].GetOccupant();
+		return PlayerPositions.FindWithLowestInfluence(excludingList);
+	}
 
-		// For each player in the player positions...
-		for (int i = 0; i < PlayerPositions.Length; i++)
-		{
-			// ...Get the current player...
-			var currentPlayer = (PlayerPiece)PlayerPositions [i].GetOccupant();
+	public PlayerPiece FindHighestInfulenceSurvivor()
+	{
+		return FindHighestInfulenceSurvivor(new PlayerPiece[0]);
+	}
 
-			if (currentPlayer == null)
-				continue;
-
-			// ...And reset the isExcluded flag...
-			var isExcluded = false;
-
-			// ...And for each player in the exluding list...
-			for (int x = 0; x < excludingList.Length; x++)
-			{
-				// ..If the player we are currently checking is in the exluding list...
-				if (currentPlayer.Equals(excludingList [x]))
-				{
-					// ...Flag this member as excluded.
-					isExcluded = true;
-					break;
-				}
-			}
-
-			// ...If the isExcluded attribute is flagged...
-			if (isExcluded)
-			{
-				// ....Then skip this entry.
-				continue;
-			}
-
-			if (currentPlayer.Infulence < lowestInfulenceCharacter.Infulence)
-				lowestInfulenceCharacter = currentPlayer;
-		}
-
-		return lowestInfulenceCharacter;
+	public PlayerPiece FindHighestInfulenceSurvivor(PlayerPiece[] excludingList)
+	{
+		return PlayerPositions.FindWithHighestInfluence(excludingList);
 	}
 
 	#endregion
