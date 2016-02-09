@@ -19,22 +19,6 @@ public class Location
 	[SerializeField]
 	private List<ItemCard> ItemCards;
 
-	#region Set Up
-
-	private void Awake()
-	{
-		InitializePositions();
-	}
-
-	/// <summary>
-	/// Initializes the positions arrays.
-	/// </summary>
-	public void InitializePositions()
-	{
-	}
-
-	#endregion
-
 	#region Card Manipulation
 
 	/// <summary>

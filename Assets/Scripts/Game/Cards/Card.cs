@@ -1,7 +1,5 @@
-﻿using UnityEngine;
-using System.Collections;
-
-public class Card
+﻿[System.Serializable]
+public abstract class Card
 {
 
 }
