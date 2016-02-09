@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class CharacterPiece
+public abstract class LocationPiece : GamePiece
 {
 
 }

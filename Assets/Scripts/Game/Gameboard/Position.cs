@@ -4,7 +4,7 @@ using System;
 [Serializable]
 public class Position
 {
-	private CharacterPiece _currentOccupant;
+	private LocationPiece _currentOccupant;
 
 	/// <summary>
 	/// Gets a value indicating whether this position is occupied.
@@ -17,7 +17,7 @@ public class Position
 	/// </summary>
 	/// <returns><c>true</c>, if character was placed, <c>false</c> otherwise.</returns>
 	/// <param name="character">Character to place into this position.</param>
-	public bool AddCharacter (CharacterPiece character)
+	public bool AddCharacter(LocationPiece character)
 	{
 		if (IsOccupied)
 			return false;
@@ -30,7 +30,7 @@ public class Position
 	/// Removes the character in this position.
 	/// </summary>
 	/// <returns>The character that was in this position.</returns>
-	public CharacterPiece RemoveCharacter ()
+	public GamePiece RemoveCharacter()
 	{
 		if (!IsOccupied)
 			return null;
@@ -44,10 +44,10 @@ public class Position
 	/// Removes the character in this position.
 	/// </summary>
 	/// <returns>The character that was in this position.</returns>
-	public CharacterPiece RemoveCharacter (CharacterPiece characterToCheck)
+	public GamePiece RemoveCharacter(LocationPiece characterToCheck)
 	{
-		if (_currentOccupant.Equals (characterToCheck))
-			return RemoveCharacter ();
+		if (_currentOccupant.Equals(characterToCheck))
+			return RemoveCharacter();
 
 		return null;
 	}
@@ -56,7 +56,7 @@ public class Position
 	/// Gets the occupant of this position.
 	/// </summary>
 	/// <returns>The occupant in this position.</returns>
-	public CharacterPiece GetOccupant ()
+	public GamePiece GetOccupant()
 	{
 		return _currentOccupant;
 	}
